@@ -23,11 +23,7 @@ def read(fname):
     return io.open(file_path, encoding="utf-8").read()
 
 
-version = None
-for line in read("ai_models_panguweather/__init__.py").split("\n"):
-    if line.startswith("__version__"):
-        version = line.split("=")[-1].strip()[1:-1]
-
+version = "0.0.1"
 
 assert version
 
@@ -60,16 +56,16 @@ if has_gpu():
 
 
 setuptools.setup(
-    name="ai-models-panguweather",
+    name="ai-models-panguweather-gfs",
     # python_requires="<3.11",  # For now, does not support Python 3.11
     version=version,
-    description="An ai-models plugin to run PanguWeather",
+    description="Run panguweather with capabilities for GFS and GDAS initial conditions and NetCDF output",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    author="European Centre for Medium-Range Weather Forecasts (ECMWF)",
-    author_email="software.support@ecmwf.int",
+    author="Jacob Radford",
+    author_email="jacob.t.radford@gmail.com",
     license="Apache License Version 2.0",
-    url="https://github.com/ecmwf-lab/ai-models-panguweather",
+    url="https://github.com/jacob-radford/ai-models-panguweather-gfs",
     packages=setuptools.find_packages(),
     include_package_data=True,
     setup_requires=["GPUtil"],
@@ -80,8 +76,8 @@ setuptools.setup(
     zip_safe=True,
     keywords="tool",
     entry_points={
-        "ai_models.model": [
-            "panguweather = ai_models_panguweather.model:PanguWeather",
+        "ai_models_gfs.model": [
+            "panguweather = ai_models_panguweather_gfs.model:PanguWeather",
         ]
     },
     classifiers=[
