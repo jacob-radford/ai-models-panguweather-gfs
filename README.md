@@ -1,6 +1,6 @@
-# ai-models-panguweather
+# ai-models-panguweather-gfs
 
-`ai-models-panguweather` is an [ai-models](https://github.com/ecmwf-lab/ai-models) plugin to run [Huawei's Pangu-Weather](https://github.com/198808xc/Pangu-Weather).
+`ai-models-panguweather-gfs` is an extension of the [ai-models-panguweather](https://github.com/ecmwf-lab/ai-models-panguweather) package, which itself is a plugin to run [Huawei's Pangu-Weather](https://github.com/198808xc/Pangu-Weather) with [ai-models](https://github.com/ecmwf-lab/ai-models).
 
 Pangu-Weather: A 3D High-Resolution Model for Fast and Accurate Global Weather Forecast, arXiv preprint: 2211.02556, 2022.
 <https://arxiv.org/abs/2211.02556>
@@ -18,11 +18,11 @@ See <https://github.com/198808xc/Pangu-Weather> for further details.
 To install the package, run:
 
 ```bash
-pip install ai-models-panguweather
+pip install ai-models-panguweather-gfs
 ```
 
 This will install the package and its dependencies, in particular the ONNX runtime. The installation script will attempt to guess which runtime to install. You can force a given runtime by specifying the the `ONNXRUNTIME` variable, e.g.:
 
 ```bash
-ONNXRUNTIME=onnxruntime-gpu pip install ai-models-panguweather
+ONNXRUNTIME=onnxruntime-gpu pip install ai-models-panguweather-gfs
 ```

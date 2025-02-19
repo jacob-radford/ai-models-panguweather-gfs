@@ -11,7 +11,7 @@ import os
 
 import numpy as np
 import onnxruntime as ort
-from ai_models.model import Model
+from ai_models_gfs.model import Model
 
 LOG = logging.getLogger(__name__)
 

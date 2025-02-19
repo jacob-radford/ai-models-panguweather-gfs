@@ -16,7 +16,7 @@ requires = [
 ]
 
 [project]
-name = "ai-models-panguweather"
+name = "ai-models-panguweather-gfs"
 
 description = "An ai-models plugin to run PanguWeather"
 keywords = [
@@ -50,17 +50,17 @@ dynamic = [
 ]
 
 dependencies = [
-  "ai-models>=0.7.0",
   "onnx",
   "onnxruntime-silicon; sys_platform == 'darwin'",
-  "onnxruntime-gpu; sys_platform == 'linux'"
+  "onnxruntime-gpu; sys_platform == 'linux'",
+  "ai-models-gfs"
 ]
 
 optional-dependencies.dev = [
   "pre-commit",
 ]
 urls.Repository = "https://github.com/ecmwf-lab/ai-models-panguweather"
-entry-points."ai_models.model".panguweather = "ai_models_panguweather.model:PanguWeather"
+entry-points."ai_models_gfs.model".panguweather = "ai_models_panguweather_gfs.model:PanguWeather"
 
 [tool.setuptools_scm]
-version_file = "src/ai_models_panguweather/_version.py"
+version_file = "src/ai_models_panguweather_gfs/_version.py"
