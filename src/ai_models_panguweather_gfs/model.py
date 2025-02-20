@@ -77,49 +77,57 @@ class PanguWeather(Model):
                 providers=self.providers,
             )
 
-        with self.timer(f"Loading {pangu_weather_6}"):
-            ort_session_6 = ort.InferenceSession(
-                pangu_weather_6,
-                sess_options=options,
-                providers=self.providers,
-            )
-
         self.write_input_fields(fields_pl + fields_sfc)
 
         input_24, input_surface_24 = input, input_surface
+        input_6, input_surface_6 = input, input_surface
+
+        # Run 24-hour model at intervals
+        stored_24hr_outputs = {0:(input, input_surface)}  # Store 24-hour outputs for later use
+
+        with self.stepper(24) as stepper:
+            for i in range(self.lead_time // 24):
+                step = (i + 1) * 24
+                output, output_surface = ort_session_24.run(
+                    None,
+                    {"input": input_24, "input_surface": input_surface_24},
+                )
+
+                input_24, input_surface_24 = output, output_surface
+
+                stored_24hr_outputs[step] = (output, output_surface)
+
+                stepper(i, step)
+
+        # Remove 24-hour model from memory
+        del ort_session_24
+
+        # Load 6-hour model separately
+        with self.timer(f"Loading {pangu_weather_6}"):
+            ort_session_6 = ort.InferenceSession(
+                pangu_weather_6, sess_options=options, providers=self.providers
+            )
 
         with self.stepper(6) as stepper:
             for i in range(self.lead_time // 6):
                 step = (i + 1) * 6
-
-                if (i + 1) % 4 == 0:
-                    output, output_surface = ort_session_24.run(
-                        None,
-                        {
-                            "input": input_24,
-                            "input_surface": input_surface_24,
-                        },
-                    )
-                    input_24, input_surface_24 = output, output_surface
+                if (step) in stored_24hr_outputs:
+                    output, output_surface = stored_24hr_outputs[step]
                 else:
                     output, output_surface = ort_session_6.run(
                         None,
-                        {
-                            "input": input,
-                            "input_surface": input_surface,
-                        },
+                        {"input": input_6, "input_surface": input_surface_6},
                     )
-                input, input_surface = output, output_surface
 
-                # Save the results
-
+                # Save results
                 pl_data = output.reshape((-1, 721, 1440))
-
                 for data, f in zip(pl_data, fields_pl):
                     self.write(data, template=f, step=step)
 
                 sfc_data = output_surface.reshape((-1, 721, 1440))
                 for data, f in zip(sfc_data, fields_sfc):
                     self.write(data, template=f, step=step)
+
+                input_6, input_surface_6 = output, output_surface
 
                 stepper(i, step)

@@ -17,7 +17,7 @@ requires = [
 
 [project]
 name = "ai-models-panguweather-gfs"
-
+version = "0.0.8"
 description = "An ai-models plugin to run PanguWeather"
 keywords = [
   "ai",
@@ -43,10 +43,6 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
-]
-
-dynamic = [
-  "version",
 ]
 
 dependencies = [
