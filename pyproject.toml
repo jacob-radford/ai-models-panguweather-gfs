@@ -17,7 +17,7 @@ requires = [
 
 [project]
 name = "ai-models-panguweather-gfs"
-version = "0.0.8"
+version = "0.0.10"
 description = "An ai-models plugin to run PanguWeather"
 keywords = [
   "ai",

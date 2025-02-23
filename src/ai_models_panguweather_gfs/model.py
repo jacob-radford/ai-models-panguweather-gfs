@@ -101,6 +101,7 @@ class PanguWeather(Model):
 
         # Remove 24-hour model from memory
         del ort_session_24
+        gc.collect()
 
         # Load 6-hour model separately
         with self.timer(f"Loading {pangu_weather_6}"):
